@@ -1,0 +1,6 @@
+.cache/
+dist/
+node_modules/
+.babelrc
+.eslintrc.json
+.prettierrc
