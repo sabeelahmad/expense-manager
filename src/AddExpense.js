@@ -11,6 +11,10 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "add":
       return [...state, action.payload];
+    case "remove":
+      return state.filter((item, index) => {
+        return index !== action.payload;
+      });
     default:
       return state;
   }
@@ -93,7 +97,7 @@ const AddExpense = () => {
         <button className="btn btn-primary">Add (+)</button>
       </form>
       <Alert val={sumExpenses(expenses)} />
-      <ExpenseList expenses={expenses} />
+      <ExpenseList dispatch={dispatchExpenses} expenses={expenses} />
     </div>
   );
 };
