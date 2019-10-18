@@ -1,5 +1,5 @@
 // Libraries and Component File Imports
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import InputField from "./InputField";
 import ExpenseList from "./ExpenseList";
 
@@ -16,6 +16,20 @@ const reducer = (state, action) => {
   }
 };
 
+const addToLocalStorage = (value, date, item) => {
+  // Fetch old list
+  let entries = JSON.parse(localStorage.getItem("Expenses"));
+  if (!entries) {
+    entries = [];
+  }
+  entries.push({
+    value,
+    date,
+    item
+  });
+  localStorage.setItem("Expenses", JSON.stringify(entries));
+};
+
 const AddExpense = () => {
   // Item Hook
   const itemHook = useState("");
@@ -26,6 +40,20 @@ const AddExpense = () => {
   // All expenses hook
   const initialState = [];
   const [expenses, dispatchExpenses] = useReducer(reducer, initialState);
+
+  // Load all data from localStorage (only once)
+  useEffect(() => {
+    // For each expense call dispatch and add to array
+    const localExpenses = JSON.parse(localStorage.getItem("Expenses"));
+    if (localExpenses) {
+      localExpenses.forEach(exp => {
+        dispatchExpenses({
+          type: "add",
+          payload: exp
+        });
+      });
+    }
+  }, []);
 
   return (
     <div style={{ marginBottom: "50px" }} className="container text-center">
@@ -41,6 +69,7 @@ const AddExpense = () => {
               item: itemHook[0]
             }
           });
+          addToLocalStorage(+expenseHook[0], dateHook[0], itemHook[0]);
         }}
       >
         <InputField
