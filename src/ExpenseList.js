@@ -28,7 +28,11 @@ const ExpenseList = ({ expenses, dispatch }) => {
             key={index}
             className="list-group-item d-flex justify-content-between align-items-center"
           >
-            &#x20B9; {expense.value}, {expense.item}
+            <p style={{ textAlign: "left" }}>
+              &#x20B9; {expense.value}
+              <br />
+              <small>{expense.item}</small>
+            </p>
             <span className="badge badge-primary badge-pill">
               {expense.date}
             </span>

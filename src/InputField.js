@@ -14,6 +14,7 @@ const InputField = ({ label, labelFor, type, hook }) => {
           value={state}
           className="form-control"
           placeholder="Enter Details"
+          required
         ></input>
       </label>
     </div>

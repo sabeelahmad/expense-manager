@@ -2,10 +2,11 @@
 import React, { useState, useReducer, useEffect } from "react";
 import InputField from "./InputField";
 import ExpenseList from "./ExpenseList";
+import Alert from "./Alert";
+//import Chart from "./Chart";
 
 // Utility Function Imports
 import sumExpenses from "./utility/sumExpenses";
-import Alert from "./Alert";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -34,13 +35,13 @@ const addToLocalStorage = (value, date, item) => {
   localStorage.setItem("Expenses", JSON.stringify(entries));
 };
 
-const AddExpense = () => {
+const AddExpense = ({ today }) => {
   // Item Hook
   const itemHook = useState("");
   // Expense Hook
   const expenseHook = useState(1);
   // Date Hook
-  const dateHook = useState("2001-01-01");
+  const dateHook = useState(today);
   // All expenses hook
   const initialState = [];
   const [expenses, dispatchExpenses] = useReducer(reducer, initialState);
