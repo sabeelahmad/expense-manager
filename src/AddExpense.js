@@ -7,6 +7,7 @@ import Alert from "./Alert";
 
 // Utility Function Imports
 import sumExpenses from "./utility/sumExpenses";
+import monthMapper from "./utility/monthMapper";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -21,7 +22,7 @@ const reducer = (state, action) => {
   }
 };
 
-const addToLocalStorage = (value, date, item) => {
+const addToLocalStorage = (value, date, item, month) => {
   // Fetch old list
   let entries = JSON.parse(localStorage.getItem("Expenses"));
   if (!entries) {
@@ -30,9 +31,39 @@ const addToLocalStorage = (value, date, item) => {
   entries.push({
     value,
     date,
-    item
+    item,
+    month
   });
   localStorage.setItem("Expenses", JSON.stringify(entries));
+};
+
+const submitHandler = (
+  e,
+  dispatchExpenses,
+  expenseHook,
+  dateHook,
+  itemHook,
+  today
+) => {
+  e.preventDefault();
+  const month = monthMapper(parseInt(dateHook[0].split("-")[1]));
+  dispatchExpenses({
+    type: "add",
+    payload: {
+      value: +expenseHook[0],
+      date: dateHook[0],
+      item: itemHook[0],
+      month: month
+    }
+  });
+  addToLocalStorage(+expenseHook[0], dateHook[0], itemHook[0], month);
+  // Reset form fields
+  const [expense, setExpense] = expenseHook; //eslint-disable-line
+  const [date, setDate] = dateHook; //eslint-disable-line
+  const [item, setItem] = itemHook; //eslint-disable-line
+  setExpense(1);
+  setDate(today);
+  setItem("");
 };
 
 const AddExpense = ({ today }) => {
@@ -62,20 +93,18 @@ const AddExpense = ({ today }) => {
 
   return (
     <div style={{ marginBottom: "50px" }} className="container text-center">
-      <h4 style={{ fontWeight: "lighter" }}>Add a new Expense</h4>
+      <h4>Add a new Expense</h4>
       <form
-        onSubmit={e => {
-          e.preventDefault();
-          dispatchExpenses({
-            type: "add",
-            payload: {
-              value: +expenseHook[0],
-              date: dateHook[0],
-              item: itemHook[0]
-            }
-          });
-          addToLocalStorage(+expenseHook[0], dateHook[0], itemHook[0]);
-        }}
+        onSubmit={e =>
+          submitHandler(
+            e,
+            dispatchExpenses,
+            expenseHook,
+            dateHook,
+            itemHook,
+            today
+          )
+        }
       >
         <InputField
           hook={expenseHook}

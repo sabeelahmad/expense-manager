@@ -14,7 +14,7 @@ const removeFromLocalStorage = payload => {
 const ExpenseList = ({ expenses, dispatch }) => {
   return (
     <div style={{ marginTop: "50px" }}>
-      <h4 style={{ fontWeight: "lighter" }}>Your Expenses</h4>
+      <h4>Your Expenses</h4>
       <ul className="list-group">
         <li className="list-group-item d-flex justify-content-between align-items-center">
           <span className="badge badge-primary badge-pill">

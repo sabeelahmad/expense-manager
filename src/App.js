@@ -2,6 +2,8 @@ import React from "react";
 import { render } from "react-dom";
 import Hero from "./Hero";
 import AddExpense from "./AddExpense";
+import ExpenseCycle from "./ExpenseCycle";
+import Chart from "./Chart";
 
 const getTodayDate = () => {
   const today = new Date();
@@ -16,7 +18,9 @@ const App = () => {
   return (
     <div className="App">
       <Hero />
+      <ExpenseCycle today={getTodayDate()} />
       <AddExpense today={getTodayDate()} />
+      <Chart />
     </div>
   );
 };
